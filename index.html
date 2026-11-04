@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five Days After DTCC Went Live, Canton's Burn Ledger Looks Exactly the Same</title>
+<meta name="description" content="An independent read of Canton Network's burn and mint ledger five days after the DTCC Tokenization Service went live, with four falsifiable signals for institutional fee demand.">
+<meta name="author" content="Leo Sanders">
+<meta property="og:title" content="Five Days After DTCC Went Live, Canton's Burn Ledger Looks Exactly the Same">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://leohoudinisanders-byte.github.io/canton-research/">
+<link rel="canonical" href="https://leohoudinisanders-byte.github.io/canton-research/">
+<style>
+  :root {
+    --ink: #16181c; --muted: #5d6470; --rule: #e2e0da; --bg: #fbfaf7;
+    --accent: #1f4d3f; --tint: #f2f0e9;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: 18px; line-height: 1.62;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 56px 22px 96px; }
+  .kicker {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin: 0 0 14px;
+  }
+  h1 { font-size: 2.1rem; line-height: 1.18; margin: 0 0 18px; letter-spacing: -.015em; }
+  .byline {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px; color: var(--muted); margin: 0 0 8px;
+  }
+  .byline a { color: var(--muted); }
+  .disclosure {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px; line-height: 1.55; background: var(--tint);
+    border-left: 3px solid var(--accent); padding: 16px 18px; margin: 26px 0 34px;
+    color: #33383f;
+  }
+  .disclosure strong { color: var(--ink); }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  h2 {
+    font-size: 1.32rem; margin: 44px 0 12px; line-height: 1.28; letter-spacing: -.01em;
+  }
+  h3 { font-size: 1.06rem; margin: 30px 0 8px; }
+  p { margin: 0 0 18px; }
+  ul, ol { margin: 0 0 20px; padding-left: 24px; }
+  li { margin: 0 0 8px; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .86em; background: var(--tint); padding: 1px 5px; border-radius: 3px;
+  }
+  table {
+    width: 100%; border-collapse: collapse; margin: 24px 0 28px;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+  }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); }
+  th { border-bottom: 1.5px solid #c9c6bd; font-weight: 650; }
+  td { vertical-align: top; }
+  .foot {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 13px; color: var(--muted); margin-top: 56px;
+    border-top: 1px solid var(--rule); padding-top: 18px;
+  }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  @media (max-width: 560px) {
+    body { font-size: 17px; }
+    h1 { font-size: 1.66rem; }
+    table { font-size: 13px; }
+    .wrap { padding-top: 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Canton Network &middot; Independent Research</p>
+  <h1>Five Days After DTCC Went Live, Canton's Burn Ledger Looks Exactly the Same</h1>
+  <p class="byline">By Leo Sanders &middot; November 4, 2026 &middot; Canton Community Research Grants, November 2026</p>
+  <div class="disclosure">
+    <strong>Disclosure.</strong> The author operates Canton Swap Broker, a paid endpoint on the Canton ecosystem, and an on-chain forensics API. Both are commercial products. Neither supplies data to this analysis and neither is mentioned in the conclusions. Network data comes from public sources (the cantonnews.org network API, Noves) plus the author's own twice-daily snapshot log covering October 1 to November 4, 2026, 73 observations.
+  </div>
+
+<p><em>Draft for Canton Community Research Grants, November 2026 window. Publication target: on or before Nov 30, 2026.</em></p>
+<p><strong>Disclosure:</strong> The author operates Canton Swap Broker, a paid x402 endpoint on the Canton ecosystem, and an on-chain forensics API. Both are commercial products; neither supplies data to this analysis, and neither is mentioned in the conclusions. All network data below comes from public sources (cantonnews.org network API, Noves, and DTCC press releases) plus the author's own twice-daily snapshot log covering Oct 1 to Nov 4, 2026 (73 observations).</p>
+<hr>
+<h2>The claim under test</h2>
+<p>On October 28, 2026, the DTCC Tokenization Service went into full commercial production. Canton Network is the only public chain integrated at launch, alongside DTCC's private Besu network. Twenty DTC participants signed, including Fidelity, J.P. Morgan, Citi, State Street, UBS, Morgan Stanley and BofA, with 150+ firms in the working group and roughly $114 trillion in assets under DTC custody. The SEC no-action letter from December 2025 sets the initial scope: Russell 1000 constituents, index ETFs, and US Treasuries, tokenized as "digital twins" that convert between traditional and tokenized form.</p>
+<p>The standard bull case follows from that: institutional settlement volume arrives on Canton, institutional settlement pays CC fees, fee payment burns CC, and the token accrues value from real usage.</p>
+<p>Five days is not enough time to settle that argument. But it is enough time to check whether the first tick of the mechanism is visible yet. It is not. Here is the data, and here is what would have to change for the thesis to start showing up on-chain.</p>
+<h2>What the burn ledger actually shows</h2>
+<p>Canton's fee mechanism destroys CC on use, and network-level burn is reported continuously. Weekly averages from the author's log:</p>
+<table>
+<thead>
+<tr>
+<th>Window</th>
+<th>Burn per day (avg)</th>
+<th>Range</th>
+<th>24h mint</th>
+<th>Net</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oct 1 to Oct 31 (65 obs)</td>
+<td>6.53M CC</td>
+<td>n/a</td>
+<td>counter frozen</td>
+<td>−6.30M/day (artifact)</td>
+</tr>
+<tr>
+<td>Nov 1 to Nov 4 (8 obs)</td>
+<td><strong>7.64M CC</strong></td>
+<td>6.57M to 8.23M</td>
+<td><strong>15.69M CC</strong></td>
+<td>≈ +0.2M/day</td>
+</tr>
+</tbody>
+</table>
+<p>Two things to note before reading anything into the increase.</p>
+<p>First, burn did rise about 17% after the launch window, from 6.53M to 7.64M CC per day. That is a real move in the data but it is well within the range of ordinary variation, and it is not accompanied by any change in <em>who</em> is burning.</p>
+<p>Second, the October "net" figures in this dataset are not trustworthy as deflation evidence. The upstream mint counter stopped updating around Sep 30, 2026, and the tracker recorded net emission as if mint were zero, producing apparent net-deflation days of −6M CC or worse. The mint stream revived on Oct 31. Any analysis of Canton as a "deflationary" network that spans October is reading a broken counter, which is worth flagging because that framing circulated widely during the month.</p>
+<p>With mint live, the honest current picture is a network running almost exactly at parity: a 24h burn/mint ratio of 0.967 on Nov 4, after 1.05 on Nov 2 and 1.02 on Nov 3. Cumulative, the network has minted 13.37B CC and burned 5.88B CC, a lifetime ratio of 0.44. Mint is steady at 15.7M CC per 24h of reward rounds, about 140 rounds per day.</p>
+<h2>The composition is the story</h2>
+<p>Per-party burn data shows the same three validators dominating every window observed since the launch:</p>
+<ul>
+<li><code>temple-mainnet-1</code>: 4.55M CC per 24h</li>
+<li><code>kora-mainNetValidator-1</code>: 3.80M CC per 24h</li>
+<li><code>cantor8-digik-1</code>: 2.57M CC per 24h</li>
+</ul>
+<p>These are ecosystem traffic purchasers, not DTC participants. No new party has appeared in the top burner set since Oct 28. Validator count has held at 1,535 and asset count at 39, unchanged through the launch week. No preapproval-fee events have been recorded. The CC price moved from $0.101 on Oct 26 to $0.098 on Nov 4, and market cap sits near $3.70B, which is to say the market has not priced a new demand regime either.</p>
+<p>That is not evidence of failure. Five days of commercial operation at a clearinghouse is a rounding error in settlement volume, and DTCC volume is not likely to hit Canton on day one at institutional scale. But it does tell us something useful: the burn we can see is overwhelmingly attributable to a small number of known, existing participants, so any genuine institutional contribution should be <em>detectable as a new line item</em>, not inferred from an aggregate slope. That makes CC demand falsifiable in a way most token theses are not.</p>
+<h2>Where the thesis actually breaks</h2>
+<p>Even in the best case, three details of Canton's economics limit how much institutional traffic can lift the token, and they deserve more attention than the launch headline.</p>
+<p><strong>Burn is USD-denominated.</strong> Under the proposed universal burn design, fees are set in dollar terms rather than token terms. That removes the reflexivity most burn tokens depend on: higher CC price does not shrink the token quantity burned, so a rising price does not mechanically increase burn pressure per unit of activity. Burns scale with usage, not with price.</p>
+<p><strong>Committed intermediaries pay a fraction of list.</strong> CIP-0129 discussion indicates maximum-discount committed intermediaries can transact around one tenth of the list price. Institutional volume flowing through discounted arrangements will burn proportionally less than headline activity suggests.</p>
+<p><strong>A large share of burn is re-minted.</strong> Validator rewards are paid by minting. Burn reduces the float, then a portion of it is replaced as rewards, which is why a burn/mint ratio hovering near 1 is the normal steady state rather than a failure of the mechanism. Net supply contraction requires burn to exceed the reward schedule, and the reward schedule does not care about institutional enthusiasm.</p>
+<p>The Universal Burn program is the actual bridge between adoption and token demand, and its timeline is not 2026. The CIP was formally sponsored by Five North on Oct 19 and drew a stated endorsement from Cumberland on Oct 22, with the caveat that pricing and tokenomics decisions remain open. It now heads to a Super Validator vote, with universal burn targeted for Q1 2027 and the pricing curve not until Q3 2027. Until then, Canton's burn is mostly the current traffic mix, and no CIP has published binding numbers.</p>
+<h2>What would change my mind</h2>
+<p>Four signals, all checkable in public data, in rough order of when they should appear:</p>
+<ol>
+<li><strong>A new party in the top burner set.</strong> A DTC participant, or a subnet clearly operated for one, appearing in the per-party ledger. This is the cleanest single confirmation that institutional settlement is paying fees on Canton.</li>
+<li><strong>Preapproval-fee events.</strong> Sustained occurrence rather than the current zero.</li>
+<li><strong>Burn exceeding mint on a sustained basis with the counter live.</strong> Not a single burn-flip day, which has already happened twice this week, but a rolling window where net supply actually contracts.</li>
+<li><strong>Binding numbers in CIP-0129 or its successor</strong>, followed by a Super Validator vote, followed by implementation.</li>
+</ol>
+<p>If none of these appear by the end of Q1 2027, the reasonable conclusion will not be that Canton failed, but that fee-bearing institutional volume is structurally small relative to reward emission, and that CC is a governance and access token first and a cash-flow token second. That is a legitimate design. It is just not the same investment thesis.</p>
+<h2>Method and limitations</h2>
+<p>Snapshots were taken twice daily (about 13:30Z and 01:30Z) from Oct 1 to Nov 4, 2026, reading the cantonnews.org network API for burn, mint, and per-party top-burner data, with Noves supplied price and validator counts as a cross-check. Two limitations matter. The network API's total supply field was cached through the observation window, so supply-delta figures of zero reflect the source, not an absence of minting. And per-party 24h burn figures from Noves and network-wide 24h burn from cantonnews cover slightly different windows, so per-party sums will not reconcile exactly to the network total; the composition argument relies on rank stability, not on exact share.</p>
+<p>The point of publishing the negative result is the same as the point of publishing the positive one: the burn ledger is public, the participants are identifiable, and the next person to test this thesis should not have to rebuild the log to do it.</p>
+  <p class="foot">Independent research. Not investment advice. Data window: October 1 to November 4, 2026. Published November 4, 2026.</p>
+</div>
+</body>
+</html>
